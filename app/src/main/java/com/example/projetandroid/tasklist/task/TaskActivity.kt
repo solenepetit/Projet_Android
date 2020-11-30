@@ -16,8 +16,8 @@ import java.util.*
 
 
 class TaskActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task)
 
         var button = findViewById<Button>(R.id.validate_button)
@@ -25,7 +25,7 @@ class TaskActivity : AppCompatActivity() {
         val editTaskDescription = findViewById<EditText>(R.id.edit_task_desc)
 
         button.setOnClickListener {
-            val newTask = Task(id = UUID.randomUUID().toString(), title = editTaskTitle.toString(), description = editTaskDescription.toString())
+            val newTask = Task(id = UUID.randomUUID().toString(), title = editTaskTitle.text.toString(), description = editTaskDescription.text.toString())
             val intent = Intent(this, MainActivity::class.java)
             intent.putExtra(Companion.TASK_KEY, newTask)
             setResult(RESULT_OK, intent)
