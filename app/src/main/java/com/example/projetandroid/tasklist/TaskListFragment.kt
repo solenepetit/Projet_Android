@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,9 +34,16 @@ class TaskListFragment : Fragment() {
         var myAdapter = TaskListAdapter(taskList)
         recyclerView.adapter = myAdapter
         var button = view.findViewById<FloatingActionButton>(R.id.addButton)
+
         button.setOnClickListener {
             addTask()
             myAdapter.notifyItemChanged(taskList.size)
+        }
+
+        myAdapter.onDeleteClickListener = { task ->
+            val position = taskList.indexOf(task)
+            taskList.remove(task)
+            myAdapter.notifyItemRemoved(position)
         }
     }
 
