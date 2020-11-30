@@ -16,18 +16,31 @@ import java.util.*
 
 
 class TaskActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task)
-
         var button = findViewById<Button>(R.id.validate_button)
-        val editTaskTitle = findViewById<EditText>(R.id.edit_task_title)
-        val editTaskDescription = findViewById<EditText>(R.id.edit_task_desc)
+        var editTaskTitle = findViewById<EditText>(R.id.edit_task_title)
+        var editTaskDescription = findViewById<EditText>(R.id.edit_task_desc)
+
+        var id_t =  UUID.randomUUID().toString()
+
+
+        val task = intent!!.getSerializableExtra(TaskListFragment.TASK) as? Task
+        var modified = 0
+        if(task != null){
+            editTaskTitle.setText(task.title)
+            editTaskDescription.setText(task.description)
+            id_t = task.id
+            modified = 1
+        }
 
         button.setOnClickListener {
-            val newTask = Task(id = UUID.randomUUID().toString(), title = editTaskTitle.text.toString(), description = editTaskDescription.text.toString())
-            val intent = Intent(this, MainActivity::class.java)
+
+            val newTask = Task(id = id_t, title = editTaskTitle.text.toString(), description = editTaskDescription.text.toString())
             intent.putExtra(Companion.TASK_KEY, newTask)
+            intent.putExtra( MODIFIED, modified)
             setResult(RESULT_OK, intent)
             finish()
         }
@@ -35,5 +48,6 @@ class TaskActivity : AppCompatActivity() {
 
     companion object {
         const val TASK_KEY = "myTask"
+        const val MODIFIED = "modified"
     }
 }

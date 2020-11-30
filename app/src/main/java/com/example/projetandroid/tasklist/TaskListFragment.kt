@@ -18,6 +18,7 @@ import java.util.*
 class TaskListFragment : Fragment() {
     companion object {
         const val ADD_TASK_REQUEST_CODE = 666
+        const val TASK = "task"
     }
 
     var myAdapter : TaskListAdapter? = null
@@ -56,6 +57,15 @@ class TaskListFragment : Fragment() {
             taskList.remove(task)
             myAdapter!!.notifyItemRemoved(position)
         }
+
+        myAdapter!!.onModifyClickListener = { task ->
+            val position = taskList.indexOf(task)
+            val intent = Intent(activity, TaskActivity::class.java)
+            intent.putExtra("task", task)
+            intent.putExtra("position", position)
+            startActivityForResult(intent, ADD_TASK_REQUEST_CODE)
+            //myAdapter!!.notifyItemChanged(position)
+        }
     }
 
     private fun addTask(task : Task) {
@@ -63,12 +73,26 @@ class TaskListFragment : Fragment() {
         taskList.add(task)
     }
 
+    private fun modifyTask(task : Task , pos : Int) {
+        // Instanciation d'un objet task avec des données préremplies:
+        taskList[pos] = task
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == TaskListFragment.ADD_TASK_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val task = data!!.getSerializableExtra(TaskActivity.TASK_KEY) as Task
-            addTask(task)
-            this.myAdapter?.notifyItemChanged(taskList.size)
+            val modified = data!!.getIntExtra(TaskActivity.MODIFIED,0)
+            if( modified == 0){
+                addTask(task)
+                this.myAdapter?.notifyItemChanged(taskList.size)
+            }
+            else{
+                val position = data!!.getIntExtra("position",taskList.size)
+                modifyTask(task, position)
+                this.myAdapter?.notifyItemChanged(position)
+            }
         }
     }
 }
+

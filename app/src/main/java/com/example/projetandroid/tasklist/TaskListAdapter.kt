@@ -18,11 +18,15 @@ class TaskListAdapter(private val taskList: List<Task>) : RecyclerView.Adapter<T
                 var task = findViewById<TextView>(R.id.task_title)
                 var desc = findViewById<TextView>(R.id.task_desc)
                 var deleteButton = findViewById<ImageButton>(R.id.delete_button)
+                var modifyButton = findViewById<ImageButton>(R.id.modify_button)
 
                 task.text = myTask.title
                 desc.text = myTask.description
                 deleteButton.setOnClickListener {
                     onDeleteClickListener?.invoke(myTask)
+                }
+                modifyButton.setOnClickListener {
+                    onModifyClickListener?.invoke(myTask)
                 }
             }
         }
@@ -44,4 +48,5 @@ class TaskListAdapter(private val taskList: List<Task>) : RecyclerView.Adapter<T
     }
 
     var onDeleteClickListener: ((Task) -> Unit)? = null
+    var onModifyClickListener: ((Task) -> Unit)? = null
 }
