@@ -8,8 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projetandroid.R
 
-class TaskListAdapter(private val taskList: List<Task>) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
-    private var myTaskList = taskList
+class TaskListAdapter(val taskList:  MutableList<Task>) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(myTask : Task) {
@@ -38,12 +37,12 @@ class TaskListAdapter(private val taskList: List<Task>) : RecyclerView.Adapter<T
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.bind(myTaskList[position])
+        holder.bind(taskList[position])
 
     }
 
     override fun getItemCount(): Int {
-        return myTaskList.size;
+        return taskList.size;
 
     }
 

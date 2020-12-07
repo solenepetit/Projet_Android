@@ -6,19 +6,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projetandroid.R
 import com.example.projetandroid.network.Api
-import com.example.projetandroid.network.UserInfo
+import com.example.projetandroid.network.TasksRepository
 import com.example.projetandroid.tasklist.task.TaskActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
-import java.util.*
 
 class TaskListFragment : Fragment() {
     companion object {
@@ -27,6 +26,8 @@ class TaskListFragment : Fragment() {
     }
 
     var myAdapter : TaskListAdapter? = null
+
+    private val tasksRepository = TasksRepository()
 
     private var taskList = mutableListOf(
         Task(id = "id_1", title = "Task 1", description = "description 1"),
@@ -43,6 +44,13 @@ class TaskListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        tasksRepository.taskList.observe(viewLifecycleOwner, Observer {
+            myAdapter?.taskList?.clear()
+            myAdapter?.taskList?.addAll(it)
+            myAdapter?.notifyDataSetChanged()
+        })
+
         // Pour une [RecyclerView] ayant l'id "recycler_view":
         var recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -81,6 +89,10 @@ class TaskListFragment : Fragment() {
             //val userInfo = UserInfo("", "", "")
             var userName = view?.findViewById<TextView>(R.id.user_name)
             userName?.text = "${userInfo?.firstName} ${userInfo?.lastName}"
+        }
+
+        lifecycleScope.launch {
+            tasksRepository.refresh()
         }
     }
 
