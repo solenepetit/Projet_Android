@@ -68,6 +68,9 @@ class TaskListFragment : Fragment() {
         myAdapter!!.onDeleteClickListener = { task ->
             val position = taskList.indexOf(task)
             taskList.remove(task)
+            lifecycleScope.launch {
+                tasksRepository.deleteTask(task)
+            }
             myAdapter!!.notifyItemRemoved(position)
         }
 
@@ -99,11 +102,17 @@ class TaskListFragment : Fragment() {
     private fun addTask(task : Task) {
         // Instanciation d'un objet task avec des données préremplies:
         taskList.add(task)
+        lifecycleScope.launch {
+            tasksRepository.addTask(task)
+        }
     }
 
     private fun modifyTask(task : Task , pos : Int) {
         // Instanciation d'un objet task avec des données préremplies:
         taskList[pos] = task
+        lifecycleScope.launch {
+            tasksRepository.updateTask(task)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

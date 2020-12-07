@@ -25,4 +25,18 @@ class TasksRepository {
         }
     }
 
+    suspend fun addTask(task : Task) {
+
+        tasksWebService.createTask(task)
+
+    }
+    suspend fun updateTask(task : Task) {
+
+        tasksWebService.updateTask(task)
+
+    }
+
+    suspend fun deleteTask(task: Task) {
+        tasksWebService.deleteTask(task.id)
+    }
 }
