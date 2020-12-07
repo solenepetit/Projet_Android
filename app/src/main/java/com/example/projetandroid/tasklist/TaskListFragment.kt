@@ -7,12 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projetandroid.R
+import com.example.projetandroid.network.Api
+import com.example.projetandroid.network.UserInfo
 import com.example.projetandroid.tasklist.task.TaskActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.launch
 import java.util.*
 
 class TaskListFragment : Fragment() {
@@ -65,6 +70,17 @@ class TaskListFragment : Fragment() {
             intent.putExtra("position", position)
             startActivityForResult(intent, ADD_TASK_REQUEST_CODE)
             //myAdapter!!.notifyItemChanged(position)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Ici on ne va pas gérer les cas d'erreur donc on force le crash avec "!!"
+        lifecycleScope.launch {
+            val userInfo = Api.userService.getInfo().body()
+            //val userInfo = UserInfo("", "", "")
+            var userName = view?.findViewById<TextView>(R.id.user_name)
+            userName?.text = "${userInfo?.firstName} ${userInfo?.lastName}"
         }
     }
 
