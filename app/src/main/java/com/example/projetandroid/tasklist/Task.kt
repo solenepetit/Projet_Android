@@ -1,6 +1,14 @@
 package com.example.projetandroid.tasklist
 
-import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-data class Task (val id : String, val title : String, val description : String = "TODO") : Serializable {
-}
+@Serializable
+data class Task (
+    @SerialName("id")
+    val id: String,
+    @SerialName("title")
+    val title: String,
+    @SerialName("description")
+    val description: String = "TODO"
+    ) : java.io.Serializable
