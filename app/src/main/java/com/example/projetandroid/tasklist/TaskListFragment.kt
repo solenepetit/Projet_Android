@@ -8,13 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projetandroid.R
 import com.example.projetandroid.network.Api
-import com.example.projetandroid.network.TasksRepository
 import com.example.projetandroid.tasklist.task.TaskActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
@@ -27,7 +27,7 @@ class TaskListFragment : Fragment() {
 
     var myAdapter : TaskListAdapter? = null
 
-    private val tasksRepository = TasksRepository()
+    private val viewModel: TaskListViewModel by viewModels() // On récupère une instance de ViewModel
 
     private var taskList = mutableListOf(
         Task(id = "id_1", title = "Task 1", description = "description 1"),
@@ -45,7 +45,7 @@ class TaskListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        tasksRepository.taskList.observe(viewLifecycleOwner, Observer {
+        viewModel.taskList.observe(viewLifecycleOwner, Observer {
             myAdapter?.taskList?.clear()
             myAdapter?.taskList?.addAll(it)
             myAdapter?.notifyDataSetChanged()
@@ -69,7 +69,7 @@ class TaskListFragment : Fragment() {
             val position = taskList.indexOf(task)
             taskList.remove(task)
             lifecycleScope.launch {
-                tasksRepository.deleteTask(task)
+                viewModel.deleteTask(task)
             }
             myAdapter!!.notifyItemRemoved(position)
         }
@@ -95,7 +95,7 @@ class TaskListFragment : Fragment() {
         }
 
         lifecycleScope.launch {
-            tasksRepository.refresh()
+            viewModel.refresh()
         }
     }
 
@@ -103,7 +103,7 @@ class TaskListFragment : Fragment() {
         // Instanciation d'un objet task avec des données préremplies:
         taskList.add(task)
         lifecycleScope.launch {
-            tasksRepository.addTask(task)
+            viewModel.addTask(task)
         }
     }
 
@@ -111,7 +111,7 @@ class TaskListFragment : Fragment() {
         // Instanciation d'un objet task avec des données préremplies:
         taskList[pos] = task
         lifecycleScope.launch {
-            tasksRepository.updateTask(task)
+            viewModel.updateTask(task)
         }
     }
 
