@@ -1,9 +1,7 @@
 package com.example.projetandroid.userinfo
 
 import androidx.lifecycle.ViewModel
-import com.example.projetandroid.network.TasksRepository
 import com.example.projetandroid.network.UserInfo
-import com.example.projetandroid.tasklist.Task
 import okhttp3.MultipartBody
 
 class UserInfoViewModel : ViewModel() {
@@ -17,7 +15,8 @@ class UserInfoViewModel : ViewModel() {
             val fetchedInfo = infoResponse.body()
             userInfo = fetchedInfo!!
         }
-        else null}
+        else null
+    }
 
     suspend fun updateInfo(userInfo : UserInfo) {repository.updateInfo(userInfo)}
     suspend fun updateAvatar(avatar: MultipartBody.Part) {repository.updateAvatar(avatar)}

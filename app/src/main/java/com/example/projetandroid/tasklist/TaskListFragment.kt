@@ -91,7 +91,7 @@ class TaskListFragment : Fragment() {
             val intent = Intent(activity, TaskActivity::class.java)
             intent.putExtra("task", task)
             intent.putExtra("position", position)
-            startActivityForResult(intent, ADD_TASK_REQUEST_CODE)
+            startActivity(intent)
             //myAdapter!!.notifyItemChanged(position)
         }
     }
@@ -105,11 +105,12 @@ class TaskListFragment : Fragment() {
             var userName = view?.findViewById<TextView>(R.id.user_name)
             userName?.text = "${userInfo?.firstName} ${userInfo?.lastName}"
             var avatarImage = view?.findViewById<ImageView>(R.id.avatar_image)
-            avatarImage?.load("https://goo.gl/gEgYUd") {
+            avatarImage?.load(userInfo?.avatar) {
                 crossfade(true)
                 crossfade(1000)
                 transformations(CircleCropTransformation())
             }
+
         }
 
         lifecycleScope.launch {

@@ -33,7 +33,7 @@
         android:autofillHints="TODO" />
 
     <ImageView
-        android:id="@+id/image_view"
+        android:id="@+id/test_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
