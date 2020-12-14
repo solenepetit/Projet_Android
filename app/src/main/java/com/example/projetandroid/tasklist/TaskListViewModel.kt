@@ -22,5 +22,5 @@ class TaskListViewModel: ViewModel() {
     suspend fun deleteTask(task: Task) {repository.deleteTask(task)}
     suspend fun addTask(task: Task) {repository.addTask(task)}
     suspend fun updateTask(task: Task) {repository.updateTask(task)}
-    suspend fun updateAvatar(avatar: MultipartBody.Part) {repository.updateAvatar(avatar)}
+
 }

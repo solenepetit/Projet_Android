@@ -17,8 +17,4 @@ interface TasksWebService {
 
     @PATCH("tasks/{id}")
     suspend fun updateTask(@Body task: Task, @Path("id") id: String? = task.id): Response<Task>
-
-    @Multipart
-    @PATCH("users/update_avatar")
-    suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response<UserInfo>
 }

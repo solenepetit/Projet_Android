@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore.Audio.Albums.getContentUri
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +37,8 @@ class UserInfoActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             handleImage(uri)
         }
+    private val userViewModel : UserInfoViewModel by viewModels()
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +46,9 @@ class UserInfoActivity : AppCompatActivity() {
 
         var takePictureButton = findViewById<Button>(R.id.take_picture_button)
         var uploadImageButton = findViewById<Button>(R.id.upload_image_button)
+        var firstName = findViewById<EditText>(R.id.edit_first_name)
+        var lastName = findViewById<EditText>(R.id.edit_last_name)
+        var email = findViewById<EditText>(R.id.edit_email)
 
         takePictureButton.setOnClickListener {
             askCameraPermissionAndOpenCamera()
@@ -53,6 +59,10 @@ class UserInfoActivity : AppCompatActivity() {
             setResult(RESULT_OK, intent)
             finish()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     private val requestPermissionLauncher =
@@ -86,7 +96,7 @@ class UserInfoActivity : AppCompatActivity() {
     }
 
     // create a temp file and get a uri for it
-    private val photoUri = getContentUri("temp")
+    //private val photoUri = getContentUri("temp")
 
     // register
     private val takePicture = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { picture ->
@@ -104,11 +114,15 @@ class UserInfoActivity : AppCompatActivity() {
 
     // convert
     private fun convert(uri: Uri) =
-        MultipartBody.Part.create(uri.toFile().asRequestBody())
+        MultipartBody.Part.createFormData(
+            name = "avatar",
+            filename = "temp.jpeg",
+            body = uri.toFile().asRequestBody()
+        )
 
     private fun handleImage(uri : Uri) {
         lifecycleScope.launch {
-            viewModel.updateAvatar(convert(uri))
+            userViewModel.updateAvatar(convert(uri))
         }
     }
 }

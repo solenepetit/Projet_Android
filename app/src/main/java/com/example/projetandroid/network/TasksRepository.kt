@@ -31,7 +31,5 @@ class TasksRepository {
         tasksWebService.deleteTask(task.id)
     }
 
-    suspend fun updateAvatar(avatar: MultipartBody.Part) {
-        tasksWebService.updateAvatar(avatar)
-    }
+
 }
