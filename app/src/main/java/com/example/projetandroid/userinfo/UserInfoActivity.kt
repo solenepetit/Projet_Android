@@ -7,18 +7,11 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Debug
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
-import coil.load
-import coil.transform.CircleCropTransformation
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.activity.viewModels
@@ -29,22 +22,23 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.example.projetandroid.R
 import com.example.projetandroid.network.Api
 import com.example.projetandroid.network.UserInfo
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
-import java.lang.Math.log
-import java.lang.StrictMath.log
 
 class UserInfoActivity : AppCompatActivity() {
 
     // register
     private val pickInGallery =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            handleImage(uri)
+            handleImage1(uri)
         }
     private val userViewModel : UserInfoViewModel by viewModels()
 
@@ -138,34 +132,63 @@ class UserInfoActivity : AppCompatActivity() {
             show()
         }
     }
+/*
+    private val photoUri by lazy {
+        FileProvider.getUriForFile(
+                this,
+                BuildConfig.APPLICATION_ID +".fileprovider",
+                File.createTempFile("avatar", ".jpeg", externalCacheDir)
 
-    // create a temp file and get a uri for it
-    //private val photoUri = getContentUri("temp")
+        )
+    }
 
     // register
-    private val takePicture = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { picture ->
+    private val takePicture = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        if (success) handleImage(photoUri)
+        else Toast.makeText(
+                this,
+                "Erreur ! 😢",
+                Toast.LENGTH_LONG
+        ).show()
+    }
+
+    // use
+    private fun openCamera() = takePicture.launch(photoUri)
+*/
+    // register
+    private val takePicture = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
         val tmpFile = File.createTempFile("avatar", "jpeg")
         tmpFile.outputStream().use {
-            picture.compress(Bitmap.CompressFormat.JPEG, 100, it)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
         }
         handleImage(tmpFile.toUri())
     }
 
-
     // use
     private fun openCamera() = takePicture.launch()
 
-    // convert
     private fun convert(uri: Uri) =
-        MultipartBody.Part.createFormData(
-            name = "avatar",
-            filename = "temp.jpeg",
-            body = uri.toFile().asRequestBody()
-        )
+            MultipartBody.Part.createFormData(
+                    name = "avatar",
+                    filename = "temp.jpeg",
+                    body = uri.toFile().asRequestBody()
+            )
+    // convert
+    private fun convert1(uri: Uri) =
+            MultipartBody.Part.createFormData(
+                    name = "avatar",
+                    filename = "temp.jpeg",
+                    body = contentResolver.openInputStream(uri)!!.readBytes().toRequestBody()
+            )
 
     private fun handleImage(uri : Uri) {
         lifecycleScope.launch {
             userViewModel.updateAvatar(convert(uri))
+        }
+    }
+    private fun handleImage1(uri : Uri) {
+        lifecycleScope.launch {
+            userViewModel.updateAvatar(convert1(uri))
         }
     }
 }
