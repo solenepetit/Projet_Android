@@ -1,11 +1,18 @@
 package com.example.projetandroid.userinfo
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Debug
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.AttributeSet
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -24,10 +31,13 @@ import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.example.projetandroid.R
 import com.example.projetandroid.network.Api
+import com.example.projetandroid.network.UserInfo
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
+import java.lang.Math.log
+import java.lang.StrictMath.log
 
 class UserInfoActivity : AppCompatActivity() {
 
@@ -39,7 +49,12 @@ class UserInfoActivity : AppCompatActivity() {
     private val userViewModel : UserInfoViewModel by viewModels()
 
 
-
+    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
+        return super.onCreateView(name, context, attrs)
+        lifecycleScope.launch {
+            userViewModel.userInfo = Api.userService.getInfo().body()
+        }
+    }
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +62,12 @@ class UserInfoActivity : AppCompatActivity() {
 
         var takePictureButton = findViewById<Button>(R.id.take_picture_button)
         var uploadImageButton = findViewById<Button>(R.id.upload_image_button)
+        var sendImageButton = findViewById<Button>(R.id.send_user_info)
+
+        var firstName = findViewById<EditText>(R.id.edit_first_name)
+        var lastName = findViewById<EditText>(R.id.edit_last_name)
+        var email = findViewById<EditText>(R.id.edit_email)
+        var image = findViewById<ImageView>(R.id.test_image)
 
         takePictureButton.setOnClickListener {
             askCameraPermissionAndOpenCamera()
@@ -54,6 +75,13 @@ class UserInfoActivity : AppCompatActivity() {
         uploadImageButton.setOnClickListener {
             // use
             pickInGallery.launch("image/*")
+        }
+
+        sendImageButton.setOnClickListener {
+            val newUserInfo = UserInfo(email.text.toString(), firstName.text.toString(),lastName.text.toString(), userViewModel.userInfo?.avatar.toString())
+            lifecycleScope.launch {
+                userViewModel.updateInfo(newUserInfo)
+            }
         }
     }
 
@@ -64,7 +92,8 @@ class UserInfoActivity : AppCompatActivity() {
             var lastName = findViewById<EditText>(R.id.edit_last_name)
             var email = findViewById<EditText>(R.id.edit_email)
             var image = findViewById<ImageView>(R.id.test_image)
-            val userInfo = Api.userService.getInfo().body()
+            userViewModel.userInfo = Api.userService.getInfo().body()
+            val userInfo = userViewModel.userInfo
             //val userInfo = UserInfo("", "", "")
             firstName?.setText(userInfo?.firstName)
             lastName?.setText(userInfo?.lastName)

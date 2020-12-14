@@ -49,4 +49,9 @@
         android:layout_height="wrap_content"
         android:text="Prendre une photo" />
 
+    <Button
+        android:id="@+id/send_user_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Modifier infos" />
 </LinearLayout>

@@ -6,7 +6,7 @@ import okhttp3.MultipartBody
 
 class UserInfoViewModel : ViewModel() {
     private val repository = UserInfoRepository()
-    private var userInfo : UserInfo? = null
+    public var userInfo : UserInfo? = null
 
     suspend fun refresh() {//repository.refresh()
         val infoResponse = repository.userService.getInfo()
