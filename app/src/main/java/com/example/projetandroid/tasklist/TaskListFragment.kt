@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,15 +14,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.example.projetandroid.R
 import com.example.projetandroid.network.Api
+import com.example.projetandroid.network.UserInfo
 import com.example.projetandroid.tasklist.task.TaskActivity
+import com.example.projetandroid.userinfo.UserInfoActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 
 class TaskListFragment : Fragment() {
     companion object {
         const val ADD_TASK_REQUEST_CODE = 666
+        const val SET_AVATAR_REQUEST_CODE = 42
         const val TASK = "task"
     }
 
@@ -57,12 +63,18 @@ class TaskListFragment : Fragment() {
         myAdapter = TaskListAdapter(taskList)
         recyclerView.adapter = myAdapter
         var button = view.findViewById<FloatingActionButton>(R.id.addButton)
+        var avatarImage = view.findViewById<ImageView>(R.id.avatar_image)
 
         button.setOnClickListener {
             //addTask()
             //myAdapter.notifyItemChanged(taskList.size)
             val intent = Intent(activity, TaskActivity::class.java)
             startActivityForResult(intent, ADD_TASK_REQUEST_CODE)
+        }
+
+        avatarImage.setOnClickListener {
+            val intent = Intent(activity, UserInfoActivity::class.java)
+            startActivityForResult(intent, SET_AVATAR_REQUEST_CODE)
         }
 
         myAdapter!!.onDeleteClickListener = { task ->
@@ -92,6 +104,10 @@ class TaskListFragment : Fragment() {
             //val userInfo = UserInfo("", "", "")
             var userName = view?.findViewById<TextView>(R.id.user_name)
             userName?.text = "${userInfo?.firstName} ${userInfo?.lastName}"
+            var avatarImage = view?.findViewById<ImageView>(R.id.avatar_image)
+            avatarImage?.load("https://goo.gl/gEgYUd") {
+                transformations(CircleCropTransformation())
+            }
         }
 
         lifecycleScope.launch {
