@@ -106,6 +106,8 @@ class TaskListFragment : Fragment() {
             userName?.text = "${userInfo?.firstName} ${userInfo?.lastName}"
             var avatarImage = view?.findViewById<ImageView>(R.id.avatar_image)
             avatarImage?.load("https://goo.gl/gEgYUd") {
+                crossfade(true)
+                crossfade(1000)
                 transformations(CircleCropTransformation())
             }
         }
