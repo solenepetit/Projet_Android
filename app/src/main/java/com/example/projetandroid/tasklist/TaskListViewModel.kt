@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projetandroid.network.TasksRepository
+import okhttp3.MultipartBody
 
 class TaskListViewModel: ViewModel() {
     private val repository = TasksRepository()
@@ -21,4 +22,5 @@ class TaskListViewModel: ViewModel() {
     suspend fun deleteTask(task: Task) {repository.deleteTask(task)}
     suspend fun addTask(task: Task) {repository.addTask(task)}
     suspend fun updateTask(task: Task) {repository.updateTask(task)}
+    suspend fun updateAvatar(avatar: MultipartBody.Part) {repository.updateAvatar(avatar)}
 }

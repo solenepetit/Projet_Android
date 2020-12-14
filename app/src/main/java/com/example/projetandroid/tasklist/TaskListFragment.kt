@@ -146,6 +146,18 @@ class TaskListFragment : Fragment() {
                 this.myAdapter?.notifyItemChanged(position)
             }
         }
+        if (requestCode == SET_AVATAR_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            lifecycleScope.launch {
+                val userInfo = Api.userService.getInfo().body()
+                //val userInfo = UserInfo("", "", "")
+                var avatarImage = view?.findViewById<ImageView>(R.id.avatar_image)
+                if (userInfo != null && userInfo.avatar != null) {
+                    avatarImage?.load(userInfo.avatar) {
+                        transformations(CircleCropTransformation())
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 package com.example.projetandroid.network
 
 import com.example.projetandroid.tasklist.Task
+import okhttp3.MultipartBody
 
 class TasksRepository {
     val tasksWebService = Api.tasksWebService
@@ -28,5 +29,9 @@ class TasksRepository {
 
     suspend fun deleteTask(task: Task) {
         tasksWebService.deleteTask(task.id)
+    }
+
+    suspend fun updateAvatar(avatar: MultipartBody.Part) {
+        tasksWebService.updateAvatar(avatar)
     }
 }
