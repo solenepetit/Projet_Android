@@ -74,7 +74,7 @@ class TaskListFragment : Fragment() {
 
         avatarImage.setOnClickListener {
             val intent = Intent(activity, UserInfoActivity::class.java)
-            startActivityForResult(intent, SET_AVATAR_REQUEST_CODE)
+            startActivity(intent)
         }
 
         myAdapter!!.onDeleteClickListener = { task ->
@@ -149,7 +149,7 @@ class TaskListFragment : Fragment() {
                 this.myAdapter?.notifyItemChanged(position)
             }
         }
-        if (requestCode == SET_AVATAR_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        /*if (requestCode == SET_AVATAR_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             lifecycleScope.launch {
                 val userInfo = Api.userService.getInfo().body()
                 //val userInfo = UserInfo("", "", "")
@@ -160,7 +160,7 @@ class TaskListFragment : Fragment() {
                     }
                 }
             }
-        }
+        }*/
     }
 }
 

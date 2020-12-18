@@ -4,26 +4,27 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/edit_first_name"
+        android:id="@+id/first_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:gravity="start|top"
         android:hint="@string/first_name"
-        android:inputType="textPersonName"
-        android:importantForAutofill="no" />
+        android:inputType="text"
+        android:autofillHints="TODO" />
 
     <EditText
-        android:id="@+id/edit_last_name"
+        android:id="@+id/last_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="start|top"
         android:hint="@string/last_name"
-        android:inputType="textMultiLine"
+        android:inputType="text"
         android:autofillHints="TODO" />
 
     <EditText
-        android:id="@+id/edit_email"
+        android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -32,26 +33,29 @@
         android:inputType="textEmailAddress"
         android:autofillHints="TODO" />
 
-    <ImageView
-        android:id="@+id/test_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/upload_image_button"
+    <EditText
+        android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/choose_image_button" />
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:importantForAutofill="no" />
 
-    <Button
-        android:id="@+id/take_picture_button"
+    <EditText
+        android:id="@+id/confirm_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/prendre_une_photo" />
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:importantForAutofill="no" />
+
 
     <Button
-        android:id="@+id/send_user_info"
+        android:id="@+id/sign_up_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/modifier_infos" />
+        android:text="@string/sign_up" />
+
 </LinearLayout>

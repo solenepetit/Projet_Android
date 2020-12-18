@@ -6,4 +6,11 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="email">Email</string>
+    <string name="log_in">Log In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="password">*****</string>
+    <string name="choose_image_button">Choisir une Image</string>
+    <string name="todo">TODO</string>
+    <string name="prendre_une_photo">Prendre une photo</string>
+    <string name="modifier_infos">Modifier infos</string>
 </resources>

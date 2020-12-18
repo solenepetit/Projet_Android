@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/fragment_authentication">
+
+    <fragment
+        android:id="@+id/fragment_authentication"
+        android:name="com.example.projetandroid.authentication.AuthenticationFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent" >
+        <action
+            android:id="@+id/action_fragment_authentication_to_fragment_login"
+            app:destination="@id/fragment_login" />
+        <action
+            android:id="@+id/action_fragment_authentication_to_fragment_signup"
+            app:destination="@id/fragment_signup" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_login"
+        android:name="com.example.projetandroid.login.LoginFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <fragment
+        android:id="@+id/fragment_signup"
+        android:name="com.example.projetandroid.authentication.SignupFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</navigation>

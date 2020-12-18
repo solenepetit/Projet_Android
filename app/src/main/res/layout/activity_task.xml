@@ -21,7 +21,7 @@
         android:gravity="start|top"
         android:hint="@string/desc_hint"
         android:inputType="textMultiLine"
-        android:autofillHints="TODO" />
+        android:autofillHints="@string/todo" />
 
     <Button
         android:id="@+id/validate_button"
