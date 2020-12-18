@@ -2,6 +2,7 @@ package com.example.projetandroid.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings.Global.putString
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,15 +11,15 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.content.edit
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import com.example.projetandroid.MainActivity
 import com.example.projetandroid.R
-import com.example.projetandroid.network.Api
-import com.example.projetandroid.tasklist.TaskListFragment
-import com.example.projetandroid.tasklist.task.TaskActivity
+import com.example.projetandroid.SHARED_PREF_TOKEN_KEY
 import com.example.projetandroid.userinfo.UserInfoViewModel
 import kotlinx.coroutines.launch
 
@@ -56,6 +57,11 @@ class LoginFragment: Fragment()  {
                     Toast.makeText(context, response?.token.toString(), Toast.LENGTH_LONG).show()
                 }
                 else{
+                    PreferenceManager.getDefaultSharedPreferences(context).edit {
+                        putString(SHARED_PREF_TOKEN_KEY, response.token)
+                    }
+                    val t = PreferenceManager.getDefaultSharedPreferences(context).getString(SHARED_PREF_TOKEN_KEY, "")
+                    Toast.makeText(context, t.toString(), Toast.LENGTH_LONG).show()
                     val intent = Intent(activity, MainActivity::class.java)
                     startActivity(intent)
                 }

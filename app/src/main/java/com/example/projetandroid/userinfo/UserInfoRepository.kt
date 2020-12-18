@@ -9,7 +9,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 
 class UserInfoRepository {
-    val userService = Api.userService
+    val userService = Api.INSTANCE.userService
 
     suspend fun refresh() {
         // Call HTTP (opération longue):

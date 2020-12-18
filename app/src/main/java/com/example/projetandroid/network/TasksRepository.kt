@@ -4,7 +4,7 @@ import com.example.projetandroid.tasklist.Task
 import okhttp3.MultipartBody
 
 class TasksRepository {
-    val tasksWebService = Api.tasksWebService
+    val tasksWebService = Api.INSTANCE.tasksWebService
 
     suspend fun refresh() {
         // Call HTTP (opération longue):

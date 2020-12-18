@@ -100,7 +100,7 @@ class TaskListFragment : Fragment() {
         super.onResume()
         // Ici on ne va pas gérer les cas d'erreur donc on force le crash avec "!!"
         lifecycleScope.launch {
-            val userInfo = Api.userService.getInfo().body()
+            val userInfo = Api.INSTANCE.userService.getInfo().body()
             //val userInfo = UserInfo("", "", "")
             var userName = view?.findViewById<TextView>(R.id.user_name)
             userName?.text = "${userInfo?.firstName} ${userInfo?.lastName}"
