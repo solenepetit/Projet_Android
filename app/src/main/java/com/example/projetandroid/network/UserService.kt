@@ -2,6 +2,8 @@ package com.example.projetandroid.network
 
 import com.example.projetandroid.login.LoginForm
 import com.example.projetandroid.login.LoginResponse
+import com.example.projetandroid.signup.SignupForm
+import com.example.projetandroid.signup.SignupResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -19,4 +21,8 @@ interface UserService {
 
     @POST("users/login")
     suspend fun login(@Body user: LoginForm): Response<LoginResponse>
+
+    @POST("users/sign_up")
+    suspend fun signup(@Body user: SignupForm): Response<SignupResponse>
+
 }

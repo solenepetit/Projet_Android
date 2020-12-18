@@ -8,15 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.projetandroid.R
+import com.example.projetandroid.SHARED_PREF_TOKEN_KEY
+import com.example.projetandroid.authentication.AuthenticationActivity
 import com.example.projetandroid.network.Api
 import com.example.projetandroid.network.UserInfo
 import com.example.projetandroid.tasklist.task.TaskActivity
@@ -62,14 +67,23 @@ class TaskListFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         myAdapter = TaskListAdapter(taskList)
         recyclerView.adapter = myAdapter
-        var button = view.findViewById<FloatingActionButton>(R.id.addButton)
+        var addButton = view.findViewById<FloatingActionButton>(R.id.addButton)
+        var disconnectButton = view.findViewById<FloatingActionButton>(R.id.disconnect)
         var avatarImage = view.findViewById<ImageView>(R.id.avatar_image)
 
-        button.setOnClickListener {
+        addButton.setOnClickListener {
             //addTask()
             //myAdapter.notifyItemChanged(taskList.size)
             val intent = Intent(activity, TaskActivity::class.java)
             startActivityForResult(intent, ADD_TASK_REQUEST_CODE)
+        }
+
+        disconnectButton.setOnClickListener{
+            PreferenceManager.getDefaultSharedPreferences(context).edit {
+                putString(SHARED_PREF_TOKEN_KEY, "")
+            }
+            val intent = Intent(activity, AuthenticationActivity::class.java)
+            startActivity(intent)
         }
 
         avatarImage.setOnClickListener {

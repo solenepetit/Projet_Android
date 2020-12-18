@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.projetandroid.login.LoginForm
 import com.example.projetandroid.login.LoginResponse
 import com.example.projetandroid.network.UserInfo
+import com.example.projetandroid.signup.SignupForm
+import com.example.projetandroid.signup.SignupResponse
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -31,4 +33,5 @@ class UserInfoViewModel : ViewModel() {
     suspend fun updateInfo(@Body userInfo : UserInfo): Response<UserInfo> {return repository.updateInfo(userInfo)}
     suspend fun updateAvatar(avatar: MultipartBody.Part) {repository.updateAvatar(avatar)}
     suspend fun login(@Body user: LoginForm): Response<LoginResponse> { return repository.login(user) }
+    suspend fun signup(@Body user: SignupForm): Response<SignupResponse> {return repository.signup(user)}
 }

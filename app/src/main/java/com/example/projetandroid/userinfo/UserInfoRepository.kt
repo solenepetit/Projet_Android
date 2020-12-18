@@ -4,6 +4,8 @@ import com.example.projetandroid.login.LoginForm
 import com.example.projetandroid.login.LoginResponse
 import com.example.projetandroid.network.Api
 import com.example.projetandroid.network.UserInfo
+import com.example.projetandroid.signup.SignupForm
+import com.example.projetandroid.signup.SignupResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -32,4 +34,9 @@ class UserInfoRepository {
     suspend fun login(@Body user: LoginForm): Response<LoginResponse> {
         return userService.login(user)
     }
+
+    suspend fun signup(@Body user: SignupForm): Response<SignupResponse> {
+        return userService.signup(user)
+    }
+
 }
