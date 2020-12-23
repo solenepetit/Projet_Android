@@ -1,5 +1,8 @@
 package com.example.projetandroid.tasklist
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.projetandroid.database.DatabaseTasks
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,3 +15,12 @@ data class Task (
     @SerialName("description")
     val description: String = "TODO"
     ) : java.io.Serializable
+
+fun List<Task>.asDatabaseModel() : List<DatabaseTasks> {
+    return map {
+        DatabaseTasks(
+            id = it.id,
+            title = it.title,
+            description = it.description)
+    }
+}

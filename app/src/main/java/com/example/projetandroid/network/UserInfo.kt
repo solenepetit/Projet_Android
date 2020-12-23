@@ -1,5 +1,6 @@
 package com.example.projetandroid.network
 
+import androidx.room.Entity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
