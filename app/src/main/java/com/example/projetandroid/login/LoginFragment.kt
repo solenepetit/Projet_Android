@@ -12,17 +12,25 @@ import androidx.core.content.edit
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import com.example.projetandroid.MainActivity
 import com.example.projetandroid.R
 import com.example.projetandroid.SHARED_PREF_TOKEN_KEY
+import com.example.projetandroid.tasklist.TaskListViewModel
 import com.example.projetandroid.userinfo.UserInfoViewModel
 import kotlinx.coroutines.launch
 
 class LoginFragment: Fragment()  {
 
-    private val userViewModel : UserInfoViewModel by viewModels()
+    private val userViewModel : UserInfoViewModel by lazy {
+        val activity = requireNotNull(this.activity) {
+            "You can only access the viewModel after onActivityCreated()"
+        }
+        ViewModelProvider(this, UserInfoViewModel.Factory(activity.application))
+                .get(UserInfoViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

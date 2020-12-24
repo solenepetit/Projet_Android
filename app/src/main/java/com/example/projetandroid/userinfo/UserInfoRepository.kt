@@ -1,26 +1,35 @@
 package com.example.projetandroid.userinfo
 
+import com.example.projetandroid.database.DatabaseUserInfo
+import com.example.projetandroid.database.UsersDatabase
 import com.example.projetandroid.login.LoginForm
 import com.example.projetandroid.login.LoginResponse
 import com.example.projetandroid.network.Api
 import com.example.projetandroid.network.UserInfo
+import com.example.projetandroid.network.asDatabaseModel
 import com.example.projetandroid.signup.SignupForm
 import com.example.projetandroid.signup.SignupResponse
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 
-class UserInfoRepository {
+class UserInfoRepository(private val database : UsersDatabase) {
     val userService = Api.INSTANCE.userService
 
     suspend fun refresh() {
-        // Call HTTP (opération longue):
-        val tasksResponse = userService.getInfo()
-        // À la ligne suivante, on a reçu la réponse de l'API:
-        if (tasksResponse.isSuccessful) {
-            tasksResponse.body()
+        withContext(Dispatchers.IO) {
+            // Call HTTP (opération longue):
+            val usersResponse = userService.getInfo()
+            // À la ligne suivante, on a reçu la réponse de l'API:
+            if (usersResponse.isSuccessful) {
+                database.userInfoDao.deleteAll()
+                database.userInfoDao.insertAll(listOf(usersResponse.body()!!.asDatabaseModel()))
+                //tasksResponse.body()
+            }
+            else null
         }
-        else null
     }
 
     suspend fun updateInfo(@Body userInfo : UserInfo): Response<UserInfo> {

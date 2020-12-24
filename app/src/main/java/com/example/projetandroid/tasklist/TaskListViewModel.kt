@@ -23,7 +23,7 @@ class TaskListViewModel(application : Application): AndroidViewModel(application
     suspend fun updateTask(task: Task) {repository.updateTask(task)}
 
     /**
-     * Factory for constructing DevByteViewModel with parameter
+     * Factory for constructing TaskListViewModel with parameter
      */
     class Factory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
