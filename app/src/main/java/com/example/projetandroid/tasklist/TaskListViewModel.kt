@@ -1,13 +1,16 @@
 package com.example.projetandroid.tasklist
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.projetandroid.database.getDatabase
 import com.example.projetandroid.network.TasksRepository
 import okhttp3.MultipartBody
 
-class TaskListViewModel: ViewModel() {
-    private val repository = TasksRepository()
+class TaskListViewModel(application : Application): AndroidViewModel(application) {
+    private val repository = TasksRepository(getDatabase(application))
     private val _taskList = MutableLiveData<List<Task>>()
     public val taskList: LiveData<List<Task>> = _taskList
 

@@ -8,7 +8,7 @@ import com.example.projetandroid.tasklist.Task
  * DatabaseTasks represents a task entity in the database
  */
 @Entity
-data class DatabaseTasks (
+data class DatabaseTask (
     @PrimaryKey
     val id: String,
     val title: String,
@@ -17,7 +17,7 @@ data class DatabaseTasks (
 /**
  * Map DatabaseTasks to domain entities
  */
-fun List<DatabaseTasks>.asDomainModel() : List<Task> {
+fun List<DatabaseTask>.asDomainModel() : List<Task> {
     return map{
         Task(
             id = it.id,
