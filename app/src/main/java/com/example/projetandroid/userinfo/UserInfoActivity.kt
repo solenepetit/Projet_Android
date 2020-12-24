@@ -67,10 +67,11 @@ class UserInfoActivity : AppCompatActivity() {
         val lastName = findViewById<EditText>(R.id.edit_last_name)
         val email = findViewById<EditText>(R.id.edit_email)
         val image = findViewById<ImageView>(R.id.test_image)
-
+        
         takePictureButton.setOnClickListener {
             askCameraPermissionAndOpenCamera()
         }
+
         uploadImageButton.setOnClickListener {
             pickInGallery.launch("image/*")
         }
@@ -81,6 +82,7 @@ class UserInfoActivity : AppCompatActivity() {
                 userViewModel.updateInfo(newUserInfo)
             }
         }
+
         userViewModel.userInfo.observe(this) {
             firstName?.setText(it.firstName)
             lastName?.setText(it.lastName)

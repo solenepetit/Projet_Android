@@ -2,14 +2,12 @@ package com.example.projetandroid.userinfo
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.projetandroid.database.getDatabase
 import com.example.projetandroid.database.getUserDatabase
 import com.example.projetandroid.login.LoginForm
 import com.example.projetandroid.login.LoginResponse
 import com.example.projetandroid.network.UserInfo
 import com.example.projetandroid.signup.SignupForm
 import com.example.projetandroid.signup.SignupResponse
-import com.example.projetandroid.tasklist.TaskListViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -20,7 +18,15 @@ class UserInfoViewModel(application : Application): AndroidViewModel(application
     private var _userInfo = MutableLiveData<UserInfo>()
     var userInfo : LiveData<UserInfo> = _userInfo
 
-    suspend fun refresh() {repository.refresh()}
+    suspend fun refresh() {repository.refresh()
+        viewModelScope.launch {
+            val infoResponse = repository.userService.getInfo()
+            // À la ligne suivante, on a reçu la réponse de l'API:
+            if (infoResponse.isSuccessful) {
+                val fetchedInfo = infoResponse.body()
+                _userInfo.value = fetchedInfo!!
+            }
+        }}
 
     suspend fun updateInfo(@Body userInfo : UserInfo): Response<UserInfo> {return repository.updateInfo(userInfo)}
     suspend fun updateAvatar(avatar: MultipartBody.Part) {repository.updateAvatar(avatar)}

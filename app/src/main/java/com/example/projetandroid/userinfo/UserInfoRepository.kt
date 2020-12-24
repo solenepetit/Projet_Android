@@ -1,6 +1,5 @@
 package com.example.projetandroid.userinfo
 
-import com.example.projetandroid.database.DatabaseUserInfo
 import com.example.projetandroid.database.UsersDatabase
 import com.example.projetandroid.login.LoginForm
 import com.example.projetandroid.login.LoginResponse
@@ -19,6 +18,8 @@ class UserInfoRepository(private val database : UsersDatabase) {
     val userService = Api.INSTANCE.userService
 
     suspend fun refresh() {
+
+
         withContext(Dispatchers.IO) {
             // Call HTTP (opération longue):
             val usersResponse = userService.getInfo()
