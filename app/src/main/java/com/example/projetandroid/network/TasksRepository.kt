@@ -8,7 +8,6 @@ import com.example.projetandroid.tasklist.Task
 import com.example.projetandroid.tasklist.asDatabaseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.MultipartBody
 
 class TasksRepository(private val database : TasksDatabase) {
     val tasksWebService = Api.INSTANCE.tasksWebService
@@ -22,6 +21,7 @@ class TasksRepository(private val database : TasksDatabase) {
             val tasksResponse = tasksWebService.getTasks()
             // À la ligne suivante, on a reçu la réponse de l'API:
             if (tasksResponse.isSuccessful) {
+                database.taskDao.deleteAll()
                 database.taskDao.insertAll(tasksResponse.body()!!.asDatabaseModel())
                 //tasksResponse.body()
             }
