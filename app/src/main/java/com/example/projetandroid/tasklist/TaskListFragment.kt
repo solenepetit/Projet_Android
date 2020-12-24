@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +22,6 @@ import com.example.projetandroid.R
 import com.example.projetandroid.SHARED_PREF_TOKEN_KEY
 import com.example.projetandroid.authentication.AuthenticationActivity
 import com.example.projetandroid.network.Api
-import com.example.projetandroid.network.UserInfo
 import com.example.projetandroid.tasklist.task.TaskActivity
 import com.example.projetandroid.userinfo.UserInfoActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -105,7 +103,7 @@ class TaskListFragment : Fragment() {
             val intent = Intent(activity, TaskActivity::class.java)
             intent.putExtra("task", task)
             intent.putExtra("position", position)
-            startActivity(intent)
+            startActivityForResult(intent,ADD_TASK_REQUEST_CODE)
             //myAdapter!!.notifyItemChanged(position)
         }
     }
@@ -137,6 +135,7 @@ class TaskListFragment : Fragment() {
         taskList.add(task)
         lifecycleScope.launch {
             viewModel.addTask(task)
+            viewModel.refresh()
         }
     }
 
@@ -145,6 +144,7 @@ class TaskListFragment : Fragment() {
         taskList[pos] = task
         lifecycleScope.launch {
             viewModel.updateTask(task)
+            viewModel.refresh()
         }
     }
 
