@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "18d71852c1fcccb942f9995f0a838c83",
+    "identityHash": "3dfa95ab03aa35667fc156e7643e5f7d",
     "entities": [
       {
-        "tableName": "DatabaseTasks",
+        "tableName": "DatabaseTask",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -40,7 +40,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '18d71852c1fcccb942f9995f0a838c83')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3dfa95ab03aa35667fc156e7643e5f7d')"
     ]
   }
 }

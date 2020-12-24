@@ -23,7 +23,7 @@ class TasksRepository(private val database : TasksDatabase) {
             // À la ligne suivante, on a reçu la réponse de l'API:
             if (tasksResponse.isSuccessful) {
                 database.taskDao.insertAll(tasksResponse.body()!!.asDatabaseModel())
-                tasksResponse.body()
+                //tasksResponse.body()
             }
             else null
         }

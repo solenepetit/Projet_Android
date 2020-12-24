@@ -12,6 +12,7 @@ import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,7 +37,13 @@ class TaskListFragment : Fragment() {
 
     var myAdapter : TaskListAdapter? = null
 
-    private val viewModel: TaskListViewModel by viewModels() // On récupère une instance de ViewModel
+    private val viewModel: TaskListViewModel by lazy {
+        val activity = requireNotNull(this.activity) {
+            "You can only access the viewModel after onActivityCreated()"
+        }
+        ViewModelProvider(this, TaskListViewModel.Factory(activity.application))
+                .get(TaskListViewModel::class.java)
+    }
 
     private var taskList = mutableListOf(
         Task(id = "id_1", title = "Task 1", description = "description 1"),
